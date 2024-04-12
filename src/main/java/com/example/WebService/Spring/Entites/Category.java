@@ -1,11 +1,16 @@
 package com.example.WebService.Spring.Entites;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +21,11 @@ public class Category {
 	private Long index;
 	private String name;
 	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> listProducts = new HashSet<>();
+	
+
 	public Category() {
 		
 	}
@@ -39,6 +49,10 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Set<Product> getListProducts() {
+		return listProducts;
 	}
 
 	@Override
