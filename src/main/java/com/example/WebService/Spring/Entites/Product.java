@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,8 +15,7 @@ import jakarta.persistence.JoinColumn;
 
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-
-
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,7 +31,8 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 	
-	
+	@OneToMany(mappedBy="id.product")
+	private Set<OrderItem> items = new HashSet<>();
 	//NOME DA CHAVE ESTRANGEIRA PRA TABELA
 	//DE PRODUTO
 	//SET USADO PQ N PERMITE REPETIDO
@@ -98,6 +100,16 @@ public class Product implements Serializable {
 
 	public Set<Category> getCategory() {
 		return categories;
+	}
+	
+	@JsonIgnore
+	public Set<Order> getOrders(){
+		Set<Order> orders = new HashSet<>();
+		for (OrderItem order : items) {
+			orders.add(order.getOrder());
+			
+		}
+		return orders;
 	}
 
 
