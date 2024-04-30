@@ -1,13 +1,12 @@
 package com.example.WebService.Spring.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.WebService.Spring.Entites.User;
 import com.example.WebService.Spring.Repositories.UserRepository;
+import com.example.WebService.Spring.Service.Exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -19,9 +18,9 @@ public class UserService {
 		return repository.findAll();
 	}
 	
-	public User findById(Long id){
-		Optional<User> obj = repository.findById(id);
-		return obj.get();
+	public User findById(Long id) {	
+		return repository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("Id not found " + id));
 	}
 	
 	public User insert (User obj) {
