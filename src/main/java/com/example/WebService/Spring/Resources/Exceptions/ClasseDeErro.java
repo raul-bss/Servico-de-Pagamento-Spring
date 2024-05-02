@@ -24,7 +24,7 @@ public class ClasseDeErro implements Serializable {
 		this.timestamp = timestamp;
 		this.status = status;
 		this.error = error;
-		this.message = message;
+		this.message = message;		
 		this.path = path;
 	}
 
@@ -67,6 +67,8 @@ public class ClasseDeErro implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
+	
+	
 	
 	
 	

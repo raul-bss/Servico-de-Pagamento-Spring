@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.example.WebService.Spring.Service.Exceptions.DatabaseException;
 import com.example.WebService.Spring.Service.Exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,16 +17,36 @@ public class TradorDeExcecoesResource {
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ClasseDeErro> recursoNaoEncontrado (ResourceNotFoundException e, HttpServletRequest request){
-		String errorMsg = "Recurso Não Encontrado";
+		
+		String errorMsg = "Not Found";
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		
 		ClasseDeErro error = new ClasseDeErro(
 				Instant.now(),
-				HttpStatus.NOT_FOUND.value(),
+				status.value(),
 				errorMsg,
 				e.getMessage(),
-				request.getRequestURI()
-				);
+				request.getRequestURI()					
+				);	
 		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<ClasseDeErro> database (DatabaseException e, HttpServletRequest request){
+		
+		String errorMsg = "Database Error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		ClasseDeErro error = new ClasseDeErro(
+				Instant.now(),
+				status.value(),
+				errorMsg,
+				e.getMessage(),
+				request.getRequestURI()					
+				);	
+		
+		return ResponseEntity.status(status).body(error);
 	}
 
 }
